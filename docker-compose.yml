@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  app:
+    build: ./app
+    networks:
+      - nginx_network
+    expose:
+      - 8000
+    restart: always
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 8080:80
+    depends_on:
+      - app
+    networks:
+      - nginx_network
+    restart: always
+
+networks:
+  nginx_network:
+    driver: bridge
