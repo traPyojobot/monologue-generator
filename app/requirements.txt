@@ -2,3 +2,5 @@ gunicorn
 fastapi
 uvicorn[standard]
 flake8
+mecab-python3
+markovify

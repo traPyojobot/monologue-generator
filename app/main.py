@@ -1,3 +1,5 @@
+import markovify
+import MeCab
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
@@ -10,7 +12,16 @@ app.add_middleware(
   allow_headers=['*']
 )
 
+wakati = MeCab.Tagger('-Owakati')
+parsed_text = ''
+with open('mono_tw.tsv', 'r') as f:
+  text = f.readlines()
+  for line in text:
+    parsed_text += wakati.parse(line)
+text_model = markovify.NewlineText(parsed_text, state_size=3)
 
-@app.get('/api')
-async def hello_world():
-  return {'message': 'Hello, world'}
+
+@app.post('/api')
+async def api_text():
+  text = text_model.make_short_sentence(100, 20, tries=100).replace(' ', '')
+  return {'text': text}
