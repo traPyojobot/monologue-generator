@@ -14,7 +14,7 @@ app.add_middleware(
 
 wakati = MeCab.Tagger('-Owakati')
 parsed_text = ''
-with open('mono_tw.tsv', 'r') as f:
+with open('data.tsv', 'r') as f:
   text = f.readlines()
   for line in text:
     parsed_text += wakati.parse(line)
